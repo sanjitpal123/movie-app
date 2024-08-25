@@ -14,7 +14,7 @@ const useFetchMovies = () => {
         params: {
           api_key: apiKey,
         },
-        timeout: 10000,
+       
       });
       console.log("Movies Response:", response);
       return response.data;

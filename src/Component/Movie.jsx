@@ -1,22 +1,41 @@
-// src/components/Movie.jsx
-import React, { useContext } from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, { useContext, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useFetchMovies from "../Services/FetchImdbData";
 import { MyContext } from "../Contextapi/ContextApi"; 
 import { IMAGE_BASE_URL } from "../helper/MovieBaseUrl";
 import Banner from "../Banner/Banner";
+import useFetchGenre from "../Services/FetchGenreData";
 
 const Movie = () => {
-  const { movieUrl, updateBanner} = useContext(MyContext);
+  const { movieUrl, updateBanner, Genre, SetGenre } = useContext(MyContext);
   const fetchMovies = useFetchMovies();
+  const fetchGenreMovie = useFetchGenre();
+  const queryClient = useQueryClient();
+
+  
+  const queryKey = Genre !== null ? ["movies", "genre", Genre] : ["movies", movieUrl];
+  const queryFn = Genre !== null ? fetchGenreMovie : fetchMovies;
+
+  console.log("Current queryKey:", queryKey);
+  console.log("Current movieUrl:", movieUrl);
+  console.log("Current Genre:", Genre);
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["movies", movieUrl],
-    queryFn: fetchMovies,
+    queryKey,
+    queryFn,
+    onSuccess: () => {
+      console.log("Data fetched successfully.");
+      if (Genre !== null) {
+        console.log("Resetting Genre...");
+        SetGenre(null);
+      }
+    },
+
   });
 
+
+
   function BannerImageUpdate(movie) {
-    console.log("fffff",movie)
     updateBanner(movie);
   }
 
@@ -29,13 +48,15 @@ const Movie = () => {
   }
 
   if (isError) {
+    console.log("Error:", error);
     return (
       <div className="flex justify-center items-center mt-[100px] text-red-500">
         Error: {error?.message || "An error occurred"}
       </div>
     );
   }
- 
+
+  console.log("Fetched Data:", data);
 
   return (
     <div className="w-full">

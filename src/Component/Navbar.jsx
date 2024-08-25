@@ -1,4 +1,11 @@
+
+import { useNavigate } from "react-router-dom";
 function Navbar() {
+  const Navigator=useNavigate();
+  function GotoHome()
+  {
+    Navigator('/')
+  }
   return (
     <div className="navbar  text-white fixed top-0  bg-[#161616] z-[10] shadow-lg rounded-lg">
       <div className="navbar-start">
@@ -31,17 +38,15 @@ function Navbar() {
             <li><a>Item 3</a></li>
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <a className="btn btn-ghost text-xl">MovieView</a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          <li><a>Item 1</a></li>
-          <li><a>Item 2</a></li>
-          <li><a>Item 3</a></li>
+         <li  className="cursor-pointer" onClick={()=>GotoHome()}>Home</li>
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        <a className="btn h-[20px] md:w-[100px]">Button</a>
       </div>
     </div>
   );

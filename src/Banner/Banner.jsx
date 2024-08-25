@@ -3,10 +3,17 @@
 import React, { useContext } from "react";
 import { MyContext } from "../Contextapi/ContextApi";
 import { IMAGE_BASE_URL } from "../helper/MovieBaseUrl";
+import { useNavigate } from "react-router-dom";
 const Banner = () => {
-  const { Movie } = useContext(MyContext);
+  const { Movie ,SetMovieId} = useContext(MyContext);
   console.log("ndflsdflsdlfds",Movie)
   const movieTitle = Movie?.original_title?.toUpperCase() || "Default Title";
+  let Navigator=useNavigate()
+  
+ function PassingId(id)
+ {
+ Navigator(`/Watch/${id}`);
+ }
 
   return (
     <div className=" w-full flex justify-center min-h-[60vh]">
@@ -45,7 +52,7 @@ const Banner = () => {
       
             </div>
             <div className="Watch flex  gap-4 ">
-            <button className="text-black bg-yellow-400 py-2  px-2 rounded-[10px] font-bold hover:bg-yellow-100 ">Watch</button>
+            <button className="text-black bg-yellow-400 py-2  px-2 rounded-[10px] font-bold hover:bg-yellow-100 " onClick={()=>PassingId(Movie.id)}>Watch</button>
             <button className="text-black bg-yellow-400 px-2 py-2 rounded-[10px] font-bold hover:bg-yellow-200 ">Exlore</button>
           </div>
           </div>

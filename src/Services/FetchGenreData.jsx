@@ -5,9 +5,10 @@ import { BaseUrl } from '../helper/BaseUrl';
 import { apiKey } from '../helper/ApiKey';
 
 const useFetchGenre = () => {
-  const { Genre } = useContext(MyContext);
+  const { Genre ,SetGenre} = useContext(MyContext);
+  console.log("genre",Genre)
 
-  const fetchMovies = useCallback(async () => {
+  const fetchGenreMovie = useCallback(async () => {
     console.log(`Fetching movies with Genre ID: ${Genre}`);
     try {
       const response = await axios.get(`${BaseUrl}/discover/movie`, {
@@ -15,17 +16,19 @@ const useFetchGenre = () => {
           api_key: apiKey,
           with_genres: Genre,
         },
-        timeout: 10000,
+      
       });
       console.log("Genre Movies Response:", response);
       return response.data;
+      
+      
     } catch (error) {
       console.error("Error fetching genre movies:", error.response || error.message);
       throw error;
     }
   }, [Genre]);
 
-  return fetchMovies;
+  return fetchGenreMovie;
 };
 
 export default useFetchGenre;
